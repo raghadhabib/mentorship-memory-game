@@ -8,6 +8,7 @@ type CardProps = {
   isMatched: boolean
 }
 
+
 export default function Card({ question, answer, type, isFaceDown, isMatched }: CardProps) {
   
   const text = type === 'question' ? question : answer
