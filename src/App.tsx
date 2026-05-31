@@ -4,8 +4,6 @@ import { useState } from 'react'
 import './App.css'
 
 
-
-
 type CardType = {
   id: number
   pairId: number
@@ -33,7 +31,7 @@ function createCards() {
       pairId: index,
       type: 'question' as const,
       text: item.question,
-      isFaceDown: false,
+      isFaceDown: true,
       isMatched: false
     },
     {
@@ -41,7 +39,7 @@ function createCards() {
       pairId: index,
       type: 'answer' as const,
       text: item.answer,
-      isFaceDown: false,
+      isFaceDown: true,
       isMatched: false
     }
   ])
@@ -50,14 +48,58 @@ function createCards() {
 
 
 function App() {
-  const [cards, setCards] = useState<CardType[]>(createCards);
+  const [cards, setcards] = useState<CardType[]>(createCards);
+  const [flippedCards, setFlippedCards] = useState<CardType[]>([])
+
+function resetCards() {
+  setFlippedCards([])
+      setcards(prevCards => prevCards.map(card => {
+        if (card.isFaceDown || card.isMatched) {
+          return card
+        }
+        return { ...card, isFaceDown: true }
+
+      }))
+      
+}
+  function onCardClick(cardid: number) {
+    if (flippedCards.length === 2) {
+      resetCards()
+    }
+    const targetCard = cards.find(card => card.id === cardid)
+    if (!targetCard) {
+      return
+    }
+
+    setFlippedCards(prev => [...prev, targetCard])
+    const [firstCard, secondCard] = flippedCards
+    setcards(prevCards => prevCards.map(card => {
+      if (card.id === cardid) {
+        
+        return { ...card, isFaceDown: false }
+      }
+
+      if ((firstCard?.pairId === secondCard?.pairId) && (card.id === firstCard?.id || card.id === secondCard?.id)) {
+      
+        return { ...card, isMatched: true }
+      }
+    
+      return card
+    }))
+
+  
+  }
+    
+   
+  
+  
 
   
   return (
     <div className="cards-container">
       {cards.map((card) => (
         
-          <Card key={card.id} question={card.text} answer={card.text} type={card.type} isFaceDown={card.isFaceDown} isMatched={card.isMatched} />
+          <Card key={card.id} question={card.text} answer={card.text} type={card.type} isFaceDown={card.isFaceDown} isMatched={card.isMatched} onClick={onCardClick} cardid={card.id} />
           
         
       ))}

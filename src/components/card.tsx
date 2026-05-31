@@ -6,16 +6,20 @@ type CardProps = {
   type: 'question' | 'answer'
   isFaceDown: boolean
   isMatched: boolean
+  onClick: (cardid: number) => void
+  cardid: number
 }
 
 
-export default function Card({ question, answer, type, isFaceDown, isMatched }: CardProps) {
+export default function Card({ question, answer, type, isFaceDown, isMatched, onClick, cardid }: CardProps) {
   
   const text = type === 'question' ? question : answer
-  const className = `card ${isFaceDown ? 'face-down' : ''} ${isMatched ? 'matched' : ''}`
+  const condition =isFaceDown ? 'face-down' : ''
+  const className = `card ${condition} ${isMatched ? 'matched' : ''}`
+
 
   return (
-    <div className={className}>
+    <div className={className} onClick={()=> onClick(cardid)}>
       {!isFaceDown && <span className="card-label">{type}</span>}
       {!isFaceDown && <p className="card-text">{text}</p>}
     </div>
