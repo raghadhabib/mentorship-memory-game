@@ -9,8 +9,8 @@ type CardType = {
   pairId: number
   type: 'question' | 'answer'
   text: string
-  isFaceDown: boolean
   isMatched: boolean
+  isFaceDown: boolean
 }
 
 
@@ -49,57 +49,50 @@ function createCards() {
 
 function App() {
   const [cards, setcards] = useState<CardType[]>(createCards);
-  const [flippedCards, setFlippedCards] = useState<CardType[]>([])
 
-function resetCards() {
-  setFlippedCards([])
-      setcards(prevCards => prevCards.map(card => {
-        if (card.isFaceDown || card.isMatched) {
-          return card
-        }
-        return { ...card, isFaceDown: true }
-
-      }))
-      
-}
   function onCardClick(cardid: number) {
-    if (flippedCards.length === 2) {
-      resetCards()
-    }
-    const targetCard = cards.find(card => card.id === cardid)
-    if (!targetCard) {
-      return
-    }
-
-    setFlippedCards(prev => [...prev, targetCard])
-    const [firstCard, secondCard] = flippedCards
-    setcards(prevCards => prevCards.map(card => {
-      if (card.id === cardid) {
-        
-        return { ...card, isFaceDown: false }
-      }
-
-      if ((firstCard?.pairId === secondCard?.pairId) && (card.id === firstCard?.id || card.id === secondCard?.id)) {
-      
-        return { ...card, isMatched: true }
-      }
     
+    setcards((prevCards) => prevCards.map((card) => {
+      if (card.id === cardid && card.isMatched === false) {
+        return { ...card, isFaceDown: !card.isFaceDown }
+      }
       return card
     }))
 
-  
-  }
-    
-   
-  
-  
+    const facedUpCards = cards.filter((card) => !card.isFaceDown && !card.isMatched)
 
+    if(facedUpCards.length === 2) {
+      if (facedUpCards[0].pairId === facedUpCards[1].pairId) {
+        setcards((prevCards) => prevCards.map((card) => {
+          if (card.pairId === facedUpCards[0].pairId) {
+            return { ...card, isMatched: true }
+          }
+          return card
+        }))
+
+      }
+      else{
+        setcards((prevCards) => prevCards.map((card) => {
+          if (card.isFaceDown === false && card.isMatched === false) {
+            return { ...card, isFaceDown: true }
+          }
+          return card
+        }))
+      }
+    }
+
+
+ 
+  }
+
+        
+      
   
   return (
     <div className="cards-container">
       {cards.map((card) => (
-        
-          <Card key={card.id} question={card.text} answer={card.text} type={card.type} isFaceDown={card.isFaceDown} isMatched={card.isMatched} onClick={onCardClick} cardid={card.id} />
+
+          <Card key={card.id} question={card.text} answer={card.text} type={card.type} isMatched={card.isMatched} onCardClick={onCardClick} isFaceDown={card.isFaceDown} cardid={card.id} />
           
         
       ))}
@@ -108,4 +101,4 @@ function resetCards() {
 }
 
 export default App
-
+  

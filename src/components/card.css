@@ -33,7 +33,7 @@
   position: absolute;
   top: 10px;
   left: 12px;
-  background: red;
+  
 }
 
 .card-text {
@@ -43,7 +43,7 @@
   text-align: center;
   margin: 0;
   padding-top: 0.5rem;
-  background-color: yellow;
+  
 }
 
 .card.face-down {
