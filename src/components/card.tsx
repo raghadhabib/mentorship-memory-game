@@ -6,7 +6,6 @@ type CardProps = {
   type: 'question' | 'answer'
   isMatched: boolean
   isFaceDown: boolean
-
   onCardClick: (cardid: number) => void
   cardid: number
 }

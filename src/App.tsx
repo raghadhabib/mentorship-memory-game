@@ -54,7 +54,7 @@ function App() {
     
     setcards((prevCards) => prevCards.map((card) => {
       if (card.id === cardid && card.isMatched === false) {
-        return { ...card, isFaceDown: !card.isFaceDown }
+        return { ...card, isFaceDown:false }
       }
       return card
     }))
