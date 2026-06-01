@@ -1,69 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap');
+
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 1rem;
-  padding: 3rem;
+  padding: 2rem;
 }
 
 .card {
-  background: var(--color-background-primary, #fff);
-  border: 0.5px solid #ddd;
-  border-radius: 12px;
-  padding: 1.25rem 1rem;
-  min-height: 120px;
+  background: #FAFAF8;
+  border: 1px solid #E8E6DF;
+  border-radius: 16px;
+  padding: 1.25rem 1rem 1rem;
+  min-height: 140px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
   cursor: pointer;
   position: relative;
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  background: radial-gradient(ellipse at 60% 0%, rgba(127,119,221,0.07) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .card:hover {
-  border-color: #aaa;
-  transform: translateY(-2px);
+  border-color: #AFA9EC;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(83,74,183,0.1);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:active {
+  transform: translateY(-1px);
 }
 
 .card-label {
-  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #999;
   position: absolute;
-  top: 10px;
-  left: 12px;
-  
+  top: 12px;
+  left: 14px;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.card-label.question {
+  background: #EEEDFE;
+  color: #534AB7;
+}
+
+.card-label.answer {
+  background: #E1F5EE;
+  color: #0F6E56;
 }
 
 .card-text {
-  font-size: 13px;
-  color: #111;
-  line-height: 1.5;
-  text-align: center;
+  font-family: 'DM Serif Display', serif;
+  font-size: 13.5px;
+  color: #2C2C2A;
+  line-height: 1.55;
+  text-align: left;
   margin: 0;
-  padding-top: 0.5rem;
-  
+  padding-top: 2.5rem;
 }
 
 .card.face-down {
   background: #3C3489;
-  border-color: #3C3489;
+  border-color: #534AB7;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.card.face-down::before {
+  background: radial-gradient(ellipse at 50% 0%, rgba(206,203,246,0.2) 0%, transparent 60%);
+  opacity: 1;
 }
 
 .card.face-down::after {
-  content: '?';
-  font-size: 2rem;
+  content: '';
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(206,203,246,0.4);
+  background: rgba(175,169,236,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-face-down-icon {
+  position: absolute;
+  font-size: 1.3rem;
   color: #CECBF6;
+  opacity: 0.7;
+  font-family: 'DM Serif Display', serif;
+}
+
+.card.face-down:hover {
+  border-color: #7F77DD;
+  box-shadow: 0 8px 24px rgba(63,50,180,0.3);
 }
 
 .card.matched {
-  background: #eafaea;
-  border-color: #6fcf97;
+  background: #F0FAF5;
+  border-color: #5DCAA5;
+  cursor: default;
 }
 
-.card.matched .card-label,
+.card.matched::before {
+  background: radial-gradient(ellipse at 60% 0%, rgba(29,158,117,0.06) 0%, transparent 70%);
+  opacity: 1;
+}
+
+.card.matched:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 .card.matched .card-text {
-  color: #27ae60;
+  color: #085041;
+}
+
+.matched-checkmark {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #1D9E75;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.matched-checkmark::after {
+  content: '✓';
+  font-size: 11px;
+  color: white;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.card-flip-enter {
+  animation: flipIn 0.3s ease forwards;
+}
+
+@keyframes flipIn {
+  from { transform: rotateY(90deg) scale(0.95); opacity: 0; }
+  to   { transform: rotateY(0deg) scale(1);    opacity: 1; }
 }

@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #F4F2EC;
+  min-height: 100vh;
+}
+
+.app-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem 4rem;
+}
+
+/* ── Header ────────────────────────────────────────────── */
+.app-header {
+  padding: 2.5rem 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.header-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.app-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 400;
+  color: #26215C;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.app-title em {
+  font-style: italic;
+  color: #534AB7;
+}
+
+.app-subtitle {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #888780;
+  margin: 4px 0 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stat-chip {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #EEEDFE;
+  color: #534AB7;
+  font-weight: 500;
+}
+
+.stat-chip.moves {
+  background: #F4F2EC;
+  color: #5F5E5A;
+  border: 1px solid #D3D1C7;
+}
+
+.reset-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1px solid #AFA9EC;
+  background: transparent;
+  color: #534AB7;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.reset-btn:hover {
+  background: #534AB7;
+  color: #EEEDFE;
+}
+
+/* ── Progress ───────────────────────────────────────────── */
+.progress-bar-wrap {
+  height: 4px;
+  background: #D3D1C7;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #534AB7, #7F77DD);
+  border-radius: 2px;
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Win banner ─────────────────────────────────────────── */
+.win-banner {
+  margin: 0 0 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: #EEEDFE;
+  border: 1px solid #AFA9EC;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.win-banner p {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  color: #26215C;
+  margin: 0;
+}
+
+.win-banner p span {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  color: #534AB7;
+  display: block;
+  margin-top: 2px;
+}
+
+.play-again-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: none;
+  background: #534AB7;
+  color: #EEEDFE;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.play-again-btn:hover {
+  background: #3C3489;
+  transform: scale(1.02);
+}
