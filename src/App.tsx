@@ -1,6 +1,8 @@
 import Card from './components/card'
 import flashcards from '../week_1.json'
 import { useState } from 'react'
+import confetti from 'canvas-confetti'
+
 import './App.css'
 
 
@@ -54,7 +56,7 @@ function App() {
     
     setcards((prevCards) => prevCards.map((card) => {
       if (card.id === cardid && card.isMatched === false) {
-        return { ...card, isFaceDown:false }
+        return { ...card, isFaceDown: false }
       }
       return card
     }))
@@ -65,7 +67,8 @@ function App() {
       if (facedUpCards[0].pairId === facedUpCards[1].pairId) {
         setcards((prevCards) => prevCards.map((card) => {
           if (card.pairId === facedUpCards[0].pairId) {
-            return { ...card, isMatched: true }
+              confetti({ particleCount: 50 , spread: 60 })
+              return { ...card, isMatched: true }
           }
           return card
         }))

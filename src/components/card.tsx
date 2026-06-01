@@ -1,5 +1,6 @@
 import './card.css'
 
+
 type CardProps = {
   question: string
   answer: string
