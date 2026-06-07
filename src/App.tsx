@@ -54,36 +54,47 @@ function App() {
 
   function onCardClick(cardid: number) {
     
-    setcards((prevCards) => prevCards.map((card) => {
+    setcards((prevCards) =>
+      {
+      
+      let newCard = prevCards.map((card) => {
       if (card.id === cardid && card.isMatched === false) {
         return { ...card, isFaceDown: false }
       }
       return card
-    }))
-
-    const facedUpCards = cards.filter((card) => !card.isFaceDown && !card.isMatched)
-
-    if(facedUpCards.length === 2) {
+    })
+  const facedUpCards = newCard.filter((card) => !card.isFaceDown && !card.isMatched)
+  
+  if(facedUpCards.length === 2) {
       if (facedUpCards[0].pairId === facedUpCards[1].pairId) {
-        setcards((prevCards) => prevCards.map((card) => {
+        newCard = newCard.map((card) => {
           if (card.pairId === facedUpCards[0].pairId) {
               confetti({ particleCount: 50 , spread: 60 })
               return { ...card, isMatched: true }
           }
           return card
-        }))
+      })
 
+       return newCard
       }
+      
       else{
-        setcards((prevCards) => prevCards.map((card) => {
+        newCard=newCard.map((card) => {
           if (card.isFaceDown === false && card.isMatched === false) {
             return { ...card, isFaceDown: true }
           }
           return card
-        }))
+        })
       }
+      
     }
+     return newCard
+ 
+  })
+    
 
+    
+    
 
  
   }
