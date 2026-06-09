@@ -14,6 +14,8 @@ type CardProps = {
 
 export default function Card({ question, answer, type, isMatched, onCardClick, isFaceDown, cardid }: CardProps) { 
 
+  console.log(`Card component with ID: ${cardid} is rendering!`)
+
   const text = type === 'question' ? question : answer
   const condition = isFaceDown ? 'face-down' : ''
   const matchedClass = isMatched ? 'matched' : ''

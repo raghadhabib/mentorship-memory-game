@@ -1,10 +1,7 @@
 import Card from './components/card'
-import flashcards from '../week_1.json'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import confetti from 'canvas-confetti'
-
 import './App.css'
-
 
 type CardType = {
   id: number
@@ -15,19 +12,21 @@ type CardType = {
   isFaceDown: boolean
 }
 
+interface FlashcardItem {
+  question: string;
+  answer: string;
+}
 
 function shuffle(array: CardType[]) {
-    for (let i = array.length - 1; i > 0 ; i--){
-      const randmIndex = Math.floor(Math.random() * (i + 1));
-      [array[i], array[randmIndex]] = [array[randmIndex], array[i]];
-
-    }
-    return array
+  for (let i = array.length - 1; i > 0 ; i--){
+    const randmIndex = Math.floor(Math.random() * (i + 1));
+    [array[i], array[randmIndex]] = [array[randmIndex], array[i]];
   }
+  return array
+}
 
-
-function createCards() {
-    const cards = flashcards.flatMap((item, index) => [
+function createCards(flashcards : FlashcardItem[]) {
+  const cards = flashcards.flatMap((item, index) => [
     {
       id: index * 2,
       pairId: index,
@@ -45,74 +44,95 @@ function createCards() {
       isMatched: false
     }
   ])
-   return shuffle(cards)
-  }
-
+  return shuffle(cards)
+}
 
 function App() {
-  const [cards, setcards] = useState<CardType[]>(createCards);
-
-  function onCardClick(cardid: number) {
-    
-    setcards((prevCards) =>
-      {
-      
-      let newCard = prevCards.map((card) => {
-      if (card.id === cardid && card.isMatched === false) {
-        return { ...card, isFaceDown: false }
-      }
-      return card
-    })
-  const facedUpCards = newCard.filter((card) => !card.isFaceDown && !card.isMatched)
+  const [cards, setcards] = useState<CardType[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   
-  if(facedUpCards.length === 2) {
-      if (facedUpCards[0].pairId === facedUpCards[1].pairId) {
-        newCard = newCard.map((card) => {
-          if (card.pairId === facedUpCards[0].pairId) {
-              confetti({ particleCount: 50 , spread: 60 })
-              return { ...card, isMatched: true }
-          }
-          return card
+
+  const [flippedCards, setFlippedCards] = useState<CardType[]>([]);
+
+  
+  useEffect(() => {
+    fetch('http://localhost:3000/api/JsonFile') 
+      .then((response) => response.json())
+      .then((data) => {
+        setcards(createCards(data));
+        setLoading(false);
       })
+      .catch((error) => {
+        console.error("Error fetching flashcards:", error);
+        setLoading(false);
+      });
+  }, []);
 
-       return newCard
+  function onCardClick(cardid: number) { 
+   
+    if (flippedCards.length === 2) return; 
+    
+    const targetCard = cards.find(c => c.id === cardid);
+    if (!targetCard || !targetCard.isFaceDown || targetCard.isMatched) return;
+
+    
+    const updatedCards = cards.map(card => 
+      card.id === cardid ? { ...card, isFaceDown: false } : card
+    );
+    setcards(updatedCards);
+
+    const currentFlipped = [...flippedCards, targetCard];
+    setFlippedCards(currentFlipped);
+
+    if (currentFlipped.length === 2) {
+      const [firstCard, secondCard] = currentFlipped;
+
+      if (firstCard.pairId === secondCard.pairId) {
+       
+        setcards(prevCards => 
+          prevCards.map(card => 
+            card.pairId === firstCard.pairId ? { ...card, isMatched: true } : card
+          )
+        );
+        confetti({ particleCount: 50 , spread: 60 });
+        setFlippedCards([]);
+      } else {
+
+        setTimeout(() => {
+          setcards(prevCards => 
+            prevCards.map(card => 
+              card.id === firstCard.id || card.id === secondCard.id 
+                ? { ...card, isFaceDown: true } 
+                : card
+            )
+          );
+          setFlippedCards([]); 
+        }, 1000);
       }
-      
-      else{
-        newCard=newCard.map((card) => {
-          if (card.isFaceDown === false && card.isMatched === false) {
-            return { ...card, isFaceDown: true }
-          }
-          return card
-        })
-      }
-      
     }
-     return newCard
- 
-  })
-    
-
-    
-    
-
- 
   }
 
-        
-      
+  if (loading) {
+    return <div style={{ textAlign: 'center', padding: '3rem' }}>Loading Game Cards...</div>
+  }      
   
   return (
     <div className="cards-container">
       {cards.map((card) => (
-
-          <Card key={card.id} question={card.text} answer={card.text} type={card.type} isMatched={card.isMatched} onCardClick={onCardClick} isFaceDown={card.isFaceDown} cardid={card.id} />
-          
-        
+        <Card 
+          key={card.id} 
+          question={card.text} 
+          answer={card.text} 
+          type={card.type} 
+          isMatched={card.isMatched} 
+          onCardClick={onCardClick} 
+          isFaceDown={card.isFaceDown} 
+          cardid={card.id} 
+        />
       ))}
     </div>
   )
 }
 
 export default App
-  
+
