@@ -1,0 +1,52 @@
+/* .skeleton-card {
+  cursor: default;
+  pointer-events: none;
+  display: 'flex';
+  flex-direction: 'column';
+  gap: '0.6rem';
+   width: '100%';
+   background-color: gray ; } */
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: rgb(163, 163, 176) 
+}
+
+
+.skeleton .line {
+  height: 8px;
+  border-radius: 4px;
+}
+
+.skeleton .rect {
+  height: 120px;
+  border-radius: 4px;
+}
+
+.skeleton div {
+  background-color: red;
+  position: relative;
+}
+
+.skeleton div::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 100%;
+  box-shadow: 0 0 80px 20px #fff;
+  animation: skeletonSlide 0.6s infinite ease-in-out;
+}
+
+@keyframes skeletonSlide {
+  from {
+    left: -100px;
+  }
+  to {
+    left: calc(100% + 100px);
+  }
+}
