@@ -1,8 +1,9 @@
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 200px));
   gap: 1rem;
   padding: 3rem;
+   justify-content: center;
 }
 
 .card {
@@ -10,7 +11,9 @@
   border: 0.5px solid #ddd;
   border-radius: 12px;
   padding: 1.25rem 1rem;
-  min-height: 120px;
+  height: 180px;
+  width: 100%;
+  max-width: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
