@@ -54,6 +54,7 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const [flippedCards, setFlippedCards] = useState<CardType[]>([])
   const [flashcardsData, setFlashcardsData] = useState<FlashcardItem[]>([])
+  const [level, setLevel] = useState<string | null>(null)
 
   
   const restartBtnStyle: React.CSSProperties = {
@@ -66,10 +67,12 @@ function App() {
   cursor: 'pointer',
 }
 
+
   
   useEffect(() => {
     console.log('useEffect run')
-    fetch('http://localhost:3000/api/JsonFile') 
+    if (!level) return
+    fetch(`http://localhost:3000/api/JsonFile/${level}`) 
       .then((response) => response.json())
        .then(data => {
         // to test the skeleton 
@@ -77,13 +80,14 @@ function App() {
         setFlashcardsData(data)
         setCards(createCards(data))
         setLoading(false)
-      }, 3000)                    
+      }, 6000)                    
     })
       .catch((error) => {
         console.error("Error fetching flashcards:", error);
         setLoading(false);
       });
-  }, []);
+  }, [level]);
+
 
 
 const onCardClick = useCallback((cardId: number) => {
@@ -122,10 +126,23 @@ const onCardClick = useCallback((cardId: number) => {
   })
 }, [])
 
+  if (!level) {
+  return (
+    <div style={{ textAlign: 'center', padding: '4rem' }}>
+      <h1 style={{ color: '#3C3489' }}>Choose your level</h1>
+      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1.5rem' }}>
+        <button onClick={() => setLevel('1')} style={restartBtnStyle}>Level 1</button>
+        <button onClick={() => setLevel('2')} style={restartBtnStyle}>Level 2</button>
+        <button onClick={() => setLevel('3')} style={restartBtnStyle}>Level 3</button>
+      </div>
+    </div>
+  )
+}
 
  const hasWon = cards.length > 0 && cards.every(c => c.isMatched)
 
   function restart() {
+    setLevel(null)
     setCards(createCards(flashcardsData))
     setFlippedCards([])
   }
@@ -138,7 +155,11 @@ const onCardClick = useCallback((cardId: number) => {
       <button onClick={restart} style={restartBtnStyle}>Play again</button>
     </div>
   )
+
+
   
+  
+
   return (
     <>
      <header style={{ textAlign: 'center', padding: '2rem 0 0' }}>

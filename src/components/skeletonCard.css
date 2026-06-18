@@ -10,19 +10,26 @@
 .skeleton {
   display: flex;
   flex-direction: column;
+  /* align-items: center; */
   gap: 0.5rem;
-  background-color: rgb(163, 163, 176) 
+  background-color: rgb(163, 163, 176) ;
+  width: 100%;      
+
 }
 
 
 .skeleton .line {
   height: 8px;
   border-radius: 4px;
+  background-color: yellow;
+  
+  
 }
 
 .skeleton .rect {
   height: 120px;
   border-radius: 4px;
+
 }
 
 .skeleton div {
@@ -30,6 +37,7 @@
   position: relative;
 }
 
+.skeleton .line::before,
 .skeleton div::before {
   content: "";
   position: absolute;

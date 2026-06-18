@@ -3,11 +3,16 @@ import './skeletonCard.css'
 // Skeleton loader
 export function SkeletonCard() {
   return (
-    <div className="card skeleton">
-      <div className="line"></div>
-      <div className="line"></div>
+  
+    <div className="skeleton">
       <div className="rect"></div>
-    </div>
+      <div className="line"></div>
+      <div className="line"></div>
+       <div className="line"></div>
+        
+      
+      </div>
+  
   )
 }
 
