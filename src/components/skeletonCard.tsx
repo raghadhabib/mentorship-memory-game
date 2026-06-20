@@ -5,11 +5,11 @@ export function SkeletonCard() {
   return (
   
     <div className="skeleton">
-      <div className="rect"></div>
+      <div className="rect">
       <div className="line"></div>
       <div className="line"></div>
        <div className="line"></div>
-        
+        </div>
       
       </div>
   

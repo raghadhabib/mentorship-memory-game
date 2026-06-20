@@ -13,7 +13,8 @@
   /* align-items: center; */
   gap: 0.5rem;
   background-color: rgb(163, 163, 176) ;
-  width: 100%;      
+  width: 100%;   
+  border-radius: 10px;   
 
 }
 
@@ -21,19 +22,25 @@
 .skeleton .line {
   height: 8px;
   border-radius: 4px;
-  background-color: yellow;
+  background-color: rgb(255, 255, 255);
+
   
   
 }
 
 .skeleton .rect {
   height: 120px;
-  border-radius: 4px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  padding:1rem;
 
 }
 
 .skeleton div {
-  background-color: red;
+  /* background-color: rgb(242, 234, 234); */
   position: relative;
 }
 
