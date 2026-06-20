@@ -6,8 +6,7 @@ type CardProps = {
   question: string
   answer: string
   type: 'question' | 'answer'
-  isMatched: boolean
-  isFaceDown: boolean
+  state : 
   onCardClick: (cardid: number) => void
   cardid: number
 }
@@ -33,6 +32,8 @@ const Card = memo(
   )
 }
 )
+
+
 
 
 export default Card

@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 import confetti from 'canvas-confetti'
 import './App.css'
 import { SkeletonGrid } from './components/skeletonCard'
+import ''
 
 
 type CardType = {
@@ -10,8 +11,7 @@ type CardType = {
   pairId: number
   type: 'question' | 'answer'
   text: string
-  isMatched: boolean
-  isFaceDown: boolean
+  state : cardState
 }
 
 interface FlashcardItem {
@@ -19,7 +19,30 @@ interface FlashcardItem {
   answer: string;
 }
 
-function shuffle(array: CardType[]) {
+//product type - multiply each things contain
+// type CardEx = {
+//   isMatched: boolean
+//   isFaceDown: boolean
+// }
+
+//sum type - adding things
+// enum Semaphore {
+
+//   red ="red",
+//   yellow = "yellow" ,
+//   green = "green"
+
+// }
+
+enum cardState {
+
+  FaceDownUnmatched = "FaceDownUnmatched",
+  FaceUpmatched ="FaceUpmatched",
+  FaceUpUnmatched = "FaceUpUnmatched"
+
+}
+
+function shuffle(array: CardType[]) : CardType[] {
   for (let i = array.length - 1; i > 0 ; i--){
     const randmIndex = Math.floor(Math.random() * (i + 1));
     [array[i], array[randmIndex]] = [array[randmIndex], array[i]];
@@ -34,16 +57,14 @@ function createCards(flashcards : FlashcardItem[]) {
       pairId: index,
       type: 'question' as const,
       text: item.question,
-      isFaceDown: true,
-      isMatched: false
+      state:cardState.FaceDownUnmatched
     },
     {
       id: index * 2 + 1,
       pairId: index,
       type: 'answer' as const,
       text: item.answer,
-      isFaceDown: true,
-      isMatched: false
+      state : cardState.FaceDownUnmatched
     }
   ])
   return shuffle(cards)
@@ -56,6 +77,7 @@ function App() {
   const [flashcardsData, setFlashcardsData] = useState<FlashcardItem[]>([])
   const [level, setLevel] = useState<string | null>(null)
 
+
   
   const restartBtnStyle: React.CSSProperties = {
   padding: '0.75rem 2rem',
@@ -65,6 +87,7 @@ function App() {
   background: '#3C3489',
   color: '#fff',
   cursor: 'pointer',
+  width:'35%'
 }
 
 
@@ -80,7 +103,7 @@ function App() {
         setFlashcardsData(data)
         setCards(createCards(data))
         setLoading(false)
-      }, 6000)                    
+      }, 1000)                    
     })
       .catch((error) => {
         console.error("Error fetching flashcards:", error);
@@ -92,30 +115,73 @@ function App() {
 
 const onCardClick = useCallback((cardId: number) => {
   setCards(prevCards => {
-    const targetCard = prevCards.find(c => c.id === cardId)
-    if (!targetCard || !targetCard.isFaceDown || targetCard.isMatched) return prevCards
+    const targetCard = prevCards.find(card => card.id === cardId)
 
-    const flippedOpen = prevCards.filter(c => !c.isFaceDown && !c.isMatched)
-    if (flippedOpen.length === 2) return prevCards // already 2 open, wait
+    //before we refine the state using enum cardState
+    // if (!targetCard || !targetCard.isFaceDown || targetCard.isMatched) return prevCards
 
+    // return the previous card if there is no card selected or the card selected is (face down + unmatched )
+    if (!targetCard || targetCard.state !== cardState.FaceDownUnmatched) return prevCards
+
+
+    //before
+    // const flippedOpen = prevCards.filter(card => !card.isFaceDown && !card.isMatched)
+    // if (flippedOpen.length === 2) return prevCards 
+
+    //return the previous card if the 2 cards selected is unmatced after we flipped its faced up
+    const flippedOpen = prevCards.filter(card => card.state === cardState.FaceUpUnmatched)
+    if (flippedOpen.length === 2) return prevCards 
+
+    //before
+    // const updatedCards = prevCards.map(card =>
+    //   card.id === cardId ? { ...card, isFaceDown: false } : card
+    // )
+
+    //flipping card open
     const updatedCards = prevCards.map(card =>
-      card.id === cardId ? { ...card, isFaceDown: false } : card
+      card.id === cardId ? { ...card, state:cardState.FaceUpUnmatched } : card
     )
 
-    const nowOpen = updatedCards.filter(c => !c.isFaceDown && !c.isMatched)
+    //before
+    // const nowOpen = updatedCards.filter(c => !c.isFaceDown && !c.isMatched)
 
-    if (nowOpen.length === 2) {
+    //matched cards
+    const nowOpen = updatedCards.filter(card => card.state === cardState.FaceUpmatched)
+    
+
+    //before
+    // if (nowOpen.length === 2) {
+    //   const [first, second] = nowOpen
+    //   if (first.pairId === second.pairId) {
+    //     confetti({ particleCount: 50, spread: 60 })
+    //     return updatedCards.map(card =>
+    //       card.pairId === first.pairId ? { ...card, isMatched: true } : card
+    //     )
+    //   } else {
+    //     setTimeout(() => {
+    //       setCards(prev => prev.map(card =>
+    //         card.id === first.id || card.id === second.id
+    //           ? { ...card, isFaceDown: true }
+    //           : card
+    //       ))
+    //     }, 1000)
+    //   }
+    // }
+
+
+    //after
+       if (nowOpen.length === 2) {
       const [first, second] = nowOpen
       if (first.pairId === second.pairId) {
         confetti({ particleCount: 50, spread: 60 })
         return updatedCards.map(card =>
-          card.pairId === first.pairId ? { ...card, isMatched: true } : card
+          card.pairId === first.pairId ? { ...card, state:cardState.FaceUpmatched } : card //match
         )
       } else {
         setTimeout(() => {
           setCards(prev => prev.map(card =>
             card.id === first.id || card.id === second.id
-              ? { ...card, isFaceDown: true }
+              ? { ...card, state: cardState.FaceDownUnmatched  } //mismatch
               : card
           ))
         }, 1000)
@@ -130,16 +196,18 @@ const onCardClick = useCallback((cardId: number) => {
   return (
     <div style={{ textAlign: 'center', padding: '4rem' }}>
       <h1 style={{ color: '#3C3489' }}>Choose your level</h1>
-      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1.5rem' }}>
-        <button onClick={() => setLevel('1')} style={restartBtnStyle}>Level 1</button>
-        <button onClick={() => setLevel('2')} style={restartBtnStyle}>Level 2</button>
-        <button onClick={() => setLevel('3')} style={restartBtnStyle}>Level 3</button>
+      <div style={{ display: 'flex',flexDirection:'column',gap:'1rem', justifyItems: 'center',alignItems:'center', marginTop: '1.5rem' }}>
+        <button onClick={() => setLevel('1')} style={restartBtnStyle}>Beginner</button>
+        <button onClick={() => setLevel('2')} style={restartBtnStyle}>Intermidate</button>
+        <button onClick={() => setLevel('3')} style={restartBtnStyle}>Wolf</button>
+        <button onClick={() => setLevel('4')} style={restartBtnStyle}>Stuff</button>
       </div>
     </div>
   )
 }
 
- const hasWon = cards.length > 0 && cards.every(c => c.isMatched)
+
+ const hasWon = cards.length > 0 && cards.every(card => card.state===cardState.FaceUpmatched)
 
   function restart() {
     setLevel(null)
