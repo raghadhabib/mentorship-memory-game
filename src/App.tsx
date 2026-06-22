@@ -47,7 +47,9 @@ function App() {
     background: "#3C3489",
     color: "#fff",
     cursor: "pointer",
-    width: "35%",
+    width: "80%",
+    maxWidth: "300px",
+    textAlign: "center",
   };
 
   useEffect(() => {
