@@ -1,39 +1,39 @@
-import './card.css'
-import { memo } from 'react'
-
+import "./card.css";
+import { memo } from "react";
+import { cardState } from "../../type";
 
 type CardProps = {
-  question: string
-  answer: string
-  type: 'question' | 'answer'
-  state : 
-  onCardClick: (cardid: number) => void
-  cardid: number
-}
+  question: string;
+  answer: string;
+  type: "question" | "answer"; //union (Sum type)
+  state: cardState;
+  onCardClick: (cardid: number) => void;
+  cardid: number;
+};
 
-
-const Card = memo(
-   function Card({ question, answer, type, isMatched, onCardClick, isFaceDown, cardid }: CardProps)
-{ 
+const Card = memo(function Card({
+  question,
+  answer,
+  type,
+  onCardClick,
+  cardid,
+  state,
+}: CardProps) {
   console.log(`Card component with ID: ${cardid} is rendering!`);
 
-  const text = type === 'question' ? question : answer
-  const condition = isFaceDown ? 'face-down' : ''
-  const matchedClass = isMatched ? 'matched' : ''
-  const className = `card ${condition} ${matchedClass}`
-  
-      
-  
+  const text = type === "question" ? question : answer;
+  const condition = state === cardState.faceDown ? "face-down" : "flipping";
+  const matchedClass = state === cardState.FaceUpmatched ? "matched" : "";
+  const className = `card ${condition} ${matchedClass}`;
+
   return (
     <div className={className} onClick={() => onCardClick(cardid)}>
-      {!isFaceDown && <span className="card-label">{type}</span>}
-      {!isFaceDown && <p className="card-text">{text}</p>}
+      {state !== cardState.faceDown && (
+        <span className="card-label">{type}</span>
+      )}
+      {state !== cardState.faceDown && <p className="card-text">{text}</p>}
     </div>
-  )
-}
-)
+  );
+});
 
-
-
-
-export default Card
+export default Card;

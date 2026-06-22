@@ -19,7 +19,9 @@
   justify-content: center;
   cursor: pointer;
   position: relative;
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    transform 0.2s ease;
 }
 
 .card:hover {
@@ -36,7 +38,6 @@
   position: absolute;
   top: 10px;
   left: 12px;
-  
 }
 
 .card-text {
@@ -46,19 +47,23 @@
   text-align: center;
   margin: 0;
   padding-top: 0.5rem;
-  
+}
+
+.card.flipping {
+  transform: scaleX(0);
 }
 
 .card.face-down {
-  background: #3C3489;
-  border-color: #3C3489;
+  background: #3c3489;
+  border-color: #3c3489;
   cursor: pointer;
+  transform: scaleX(1);
 }
 
 .card.face-down::after {
-  content: '?';
+  content: "?";
   font-size: 2rem;
-  color: #CECBF6;
+  color: #cecbf6;
 }
 
 .card.matched {
@@ -70,7 +75,6 @@
 .card.matched .card-text {
   color: #27ae60;
 }
-
 
 @media (min-width: 1024px) {
   .cards-container {

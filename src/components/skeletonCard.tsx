@@ -1,19 +1,16 @@
-import './skeletonCard.css'
+import "./skeletonCard.css";
 
 // Skeleton loader
 export function SkeletonCard() {
   return (
-  
     <div className="skeleton">
       <div className="rect">
-      <div className="line"></div>
-      <div className="line"></div>
-       <div className="line"></div>
-        </div>
-      
+        <div className="line"></div>
+        <div className="line"></div>
+        <div className="line"></div>
       </div>
-  
-  )
+    </div>
+  );
 }
 
 export function SkeletonGrid() {
@@ -23,6 +20,5 @@ export function SkeletonGrid() {
         <SkeletonCard key={i} />
       ))}
     </div>
-  )
+  );
 }
-
