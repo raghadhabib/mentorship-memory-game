@@ -22,7 +22,7 @@ const Card = memo(function Card({
   console.log(`Card component with ID: ${cardid} is rendering!`);
 
   const text = type === "question" ? question : answer;
-  const condition = state === cardState.faceDown ? "face-down" : "flipping";
+  const condition = state === cardState.faceDown ? "face-down" : "";
   const matchedClass = state === cardState.FaceUpmatched ? "matched" : "";
   const className = `card ${condition} ${matchedClass}`;
 

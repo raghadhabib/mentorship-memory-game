@@ -49,15 +49,15 @@
   padding-top: 0.5rem;
 }
 
-.card.flipping {
+/* .card.flipping {
   transform: scaleX(0);
-}
+} */
 
 .card.face-down {
   background: #3c3489;
   border-color: #3c3489;
   cursor: pointer;
-  transform: scaleX(1);
+  /* transform: scaleX(1); */
 }
 
 .card.face-down::after {
