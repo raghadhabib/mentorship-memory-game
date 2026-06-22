@@ -36,7 +36,6 @@ function createCards(flashcards: FlashcardItem[]) {
 function App() {
   const [cards, setCards] = useState<CardType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [flippedCards, setFlippedCards] = useState<CardType[]>([]);
   const [flashcardsData, setFlashcardsData] = useState<FlashcardItem[]>([]);
   const [level, setLevel] = useState<string | null>(null);
 
@@ -198,7 +197,6 @@ function App() {
   function restart() {
     setLevel(null);
     setCards(createCards(flashcardsData));
-    setFlippedCards([]);
   }
 
   if (loading) return <SkeletonGrid />;
