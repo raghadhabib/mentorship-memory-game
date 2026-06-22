@@ -201,7 +201,7 @@ function App() {
     setCards(createCards(flashcardsData));
   }
 
-  if (loading) return <SkeletonGrid />;
+  if (!loading) return <SkeletonGrid />;
 
   if (hasWon)
     return (
