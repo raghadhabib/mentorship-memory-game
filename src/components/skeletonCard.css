@@ -4,8 +4,9 @@
   /* align-items: center; */
   gap: 0.5rem;
   background-color: rgb(163, 163, 176);
-  width: 120px;
+  max-width: 100%;
   border-radius: 10px;
+  width: 160px;
 }
 
 .skeleton .line {

@@ -55,7 +55,7 @@ function App() {
   useEffect(() => {
     console.log("useEffect run");
     if (!level) return;
-    fetch(`https://api-1m5w.onrender.com/api/JsonFile/${level}`)
+    fetch(`http://localhost:3000/api/JsonFile/${level}`)
       .then((response) => response.json())
       .then((data) => {
         // to test the skeleton
@@ -201,7 +201,7 @@ function App() {
     setCards(createCards(flashcardsData));
   }
 
-  if (!loading) return <SkeletonGrid />;
+  if (loading) return <SkeletonGrid />;
 
   if (hasWon)
     return (

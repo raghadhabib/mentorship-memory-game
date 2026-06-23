@@ -15,7 +15,7 @@
   height: 180px;
   /* width: 100%; */
   min-width: 120px;
-  max-width: 100%;
+  max-width: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,6 +80,10 @@
 
 @media (min-width: 1024px) {
   .cards-container {
+    display: grid;
     grid-template-columns: repeat(5, minmax(150px, 200px));
+  }
+  .card {
+    max-width: 100%;
   }
 }
