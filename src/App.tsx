@@ -68,6 +68,7 @@ function App() {
       .catch((error) => {
         console.error("Error fetching flashcards:", error);
         setLoading(false);
+        setLevel(null);
       });
   }, [level]);
 
