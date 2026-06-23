@@ -49,9 +49,9 @@
   text-align: center;
   margin: 0;
   padding-top: 0.5rem;
-  overflow-y: auto;
-  max-height: 130px;
-  word-break: break-word;
+  /* overflow-y: auto; */
+  min-height: 130px;
+  /* word-break: break-word; */
 }
 
 /* .card.flipping {
